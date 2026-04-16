@@ -24,6 +24,9 @@ public class SecurityConfig {
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/h2-console/**").permitAll()
 				.requestMatchers("/auth/**").permitAll()
+				.requestMatchers("/users/**").permitAll()
+				.requestMatchers("/products/**").permitAll()
+				.requestMatchers("/movements/**").permitAll()
 				.anyRequest().authenticated());
 		
 		return http.build();

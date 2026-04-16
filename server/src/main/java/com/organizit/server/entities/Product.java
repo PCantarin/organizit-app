@@ -2,12 +2,17 @@ package com.organizit.server.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +28,10 @@ public class Product implements Serializable{
 	private String description;
 	private Instant dateInsert;
 	private Integer quantity;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	private List<Movement> movements = new ArrayList<>();
 
 	public Product() {
 	}
@@ -84,6 +93,10 @@ public class Product implements Serializable{
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+	
+	public List<Movement> getMovements(){
+		return movements;
 	}
 
 	@Override
