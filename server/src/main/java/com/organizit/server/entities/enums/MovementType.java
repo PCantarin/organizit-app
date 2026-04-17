@@ -3,7 +3,7 @@ package com.organizit.server.entities.enums;
 public enum MovementType {
 
 	ITEM_REMOVED("Removed"),
-	ITEM_INSERTED("Isserted");
+	ITEM_INSERTED("Inserted");
 	
 	private String descricao;
 	
