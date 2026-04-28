@@ -1,0 +1,32 @@
+.top-bar {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.main-container {
+  height: calc(100vh - 64px);
+}
+
+.sidebar {
+  width: 250px;
+  border-radius: 0px;
+}
+
+.menu-item-header {
+  padding: 15px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.page-content {
+  padding: 24px;
+}
