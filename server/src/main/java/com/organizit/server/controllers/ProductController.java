@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.organizit.server.entities.Product;
-import com.organizit.server.entities.User;
 import com.organizit.server.services.ProductService;
 
 @RestController
