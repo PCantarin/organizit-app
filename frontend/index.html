@@ -19,21 +19,24 @@
         <div class="login-form">
             <h2>Login</h2>
 
+            <form id="loginForm">
             <div class="input-group">
-                <label>Email</label>
-                <input type="email">
+                <label>Usuário</label>
+                <input id="login" type="text">
             </div>
 
             <div class="input-group">
                 <label>Senha</label>
-                <input type="password">
+                <input id="password" type="password">
             </div>
+            <button type="submit">Entrar</button>
+            <p id="errorMsg" style="color: red;"></p>
+        </form>
 
-            <button>Entrar</button>
         </div>
-
     </div>
 
+    <script src="./js/auth.js"></script>
 </body>
 
 </html>
