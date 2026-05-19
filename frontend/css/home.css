@@ -1,0 +1,109 @@
+.sistema-layout {
+    display: grid;
+    grid-template-rows: 60px 1fr;
+    grid-template-columns: 250px 1fr;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.topbar {
+    grid-column: 1 / -1;
+    background-color: rgb(92, 92, 255);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.sidebar {
+    grid-column: 1;
+    background-color: #5a58db;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-nav button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: none;
+    color: #cbd5e1;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.sidebar-nav button:hover {
+    background-color: #4947bd;
+    color: #fff;
+}
+
+#conteudo-principal {
+    grid-column: 2;
+    background-color: #f8fafc;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .sistema-layout {
+        grid-template-columns: 1fr; 
+    }
+
+    .menu-toggle {
+        display: block; /* Botão aparece no celular */
+    }
+
+    /* A sidebar sai do grid e vira um painel flutuante escondido na esquerda */
+    .sidebar {
+        position: fixed;
+        top: 60px;
+        left: -250px;
+        width: 250px;
+        height: calc(100vh - 60px);
+        z-index: 999;
+    }
+
+    /* Classe ativada pelo JavaScript para fazer o menu deslizar para dentro da tela */
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* O conteúdo assume a coluna única automaticamente */
+    #conteudo-principal {
+        grid-column: 1;
+        padding: 20px;
+    }
+}

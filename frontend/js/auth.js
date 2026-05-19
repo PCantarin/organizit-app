@@ -23,7 +23,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
             const data = await response.json();
             const token = data.token;
             localStorage.setItem('token', token);
-            window.location.href = '/pages/home.html';
+            window.location.href = 'template.html';
         }
         else{
             errorMessage.innerText = 'Usuário ou senha inválidos';
