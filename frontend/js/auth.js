@@ -26,7 +26,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
             window.location.href = 'template.html';
         }
         else{
-            errorMessage.innerText = 'Usuário ou senha inválidos';
+            errorMessage.innerText = 'Usuário ou senha inválidos!';
         }
     }
     catch(error){

@@ -29,7 +29,12 @@ body {
     color: white;
 }
 
+.login-img img{
+    height: 200px;
+}
+
 .login-img h2 {
+    margin-top: 2vh;
     font-size: 30px;
     font-weight: 700;
 }
@@ -50,6 +55,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .login-form h2 {

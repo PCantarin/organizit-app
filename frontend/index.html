@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/img/organizit_icon.png">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Login</title>
@@ -14,8 +15,8 @@
     <div class="login-container">
 
         <div class="login-img">
-            <h2>Welcome</h2>
-            <h1>OrganizIT</h1>
+            <img src="/assets/img/organizit_vertical_logo.png">
+            <h2>Welcome!</h2>
         </div>
 
         <div class="login-form">
@@ -23,16 +24,14 @@
 
             <form id="loginForm">
             <div class="input-group">
-                <label>Usuário</label>
-                <input id="login" type="text">
+                <input placeholder="Usuário" id="login" type="text">
             </div>
 
             <div class="input-group">
-                <label>Senha</label>
-                <input id="password" type="password">
+                <input placeholder="Senha" id="password" type="password">
             </div>
             <button type="submit">Entrar</button>
-            <p id="errorMsg" style="color: red;"></p>
+            <p id="errorMsg" style="color: rgb(187, 0, 0);"></p>
         </form>
 
         </div>
