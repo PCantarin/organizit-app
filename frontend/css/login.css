@@ -58,7 +58,11 @@ body {
     align-items: center;
 }
 
-.login-form h2 {
+.login-form form{
+    width: 80%;
+}
+
+.login-form h1{
     margin-bottom: 25px;
     color: #2e2e2e;
 }
