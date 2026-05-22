@@ -1,43 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/assets/img/organizit_icon.png">
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/style.css">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-</head>
-
-<body>
-
-    <div class="login-container">
-
-        <div class="login-img">
-            <img src="/assets/img/organizit_vertical_logo.png">
-            <h2>Bem-vindo!</h2>
-        </div>
-
-        <div class="login-form">
-            <h1>Login</h1>
-
-            <form id="loginForm">
-                <div class="input-group">
-                    <input placeholder="Usuário" id="login" type="text">
-                </div>
-
-                <div class="input-group">
-                    <input placeholder="Senha" id="password" type="password">
-                </div>
-                <button type="submit">Entrar</button>
-                <p id="errorMsg" style="color: rgb(187, 0, 0); margin-top: 15px;"></p>
-            </form>
-
-        </div>
-    </div>
-
-    <script src="/js/auth.js"></script>
-</body>
-
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
