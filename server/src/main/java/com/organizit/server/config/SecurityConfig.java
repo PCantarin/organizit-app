@@ -38,7 +38,7 @@ public class SecurityConfig {
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/h2-console/**").permitAll()
-				.requestMatchers("/auth/**").permitAll()
+				.requestMatchers("/auth/login").permitAll()
 				.anyRequest().authenticated())
 		.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 		

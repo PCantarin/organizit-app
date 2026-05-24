@@ -1,33 +1,43 @@
 import React, { useState } from "react";
 import { login } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
+
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   async function formHandle(e: React.SubmitEvent) {
+
     e.preventDefault();
     try {
       const data = await login(user, password);
       localStorage.setItem("token", data.token);
+      navigate("/home");
     }
-    catch (error) {
-      console.error(error);
+    catch (error: any) {
+      if (error.response?.status === 401) {
+        setErrorMessage("Usuário ou senha incorretos.")
+      }
     }
+    
   }
 
   return (
+    <div className="login-body">
     <section
-      className="content justify-content-center d-flex shadow-lg"
+      className="login-container justify-content-center d-flex shadow-lg"
       id="content"
     >
-      <div className="col-md-6 left-box">
+      <div className="col-md-6 login-left-box">
         <img src="/src/assets/img/organizit_vertical_logo.png"></img>
         <h2>Bem-Vindo!</h2>
       </div>
 
-      <div className="col-md-6 right-box">
+      <div className="col-md-6 login-right-box">
         <h1>Login</h1>
 
         <form onSubmit={formHandle}>
@@ -56,9 +66,12 @@ function Login() {
               Entrar
             </button>
           </div>
+
+          <p>{errorMessage}</p>
         </form>
       </div>
     </section>
+    </div>
   );
 }
 
