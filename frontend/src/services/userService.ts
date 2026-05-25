@@ -1,14 +1,22 @@
 import api from "./api";
 
-export async function getUsers() {
+
+export type User = {
+    id: number;
+    name: string;
+    username: string;
+    role: string;
+    createdAt: string;
+};
+
+
+export async function getUsers(): Promise<User[]> {
 
     const token = localStorage.getItem("token");
-    
-    console.log(token)
 
     const response = await api.get(("/users"), {
         headers: {
-            Authorization: `Bearer: ${token}`
+            Authorization: `Bearer ${token}`
         }
     })
 

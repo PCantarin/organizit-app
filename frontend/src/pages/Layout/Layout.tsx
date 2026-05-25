@@ -1,4 +1,3 @@
-import "./Layout.css"
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,22 +9,20 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { ListItem, ListItemButton, ListItemText, ListItemIcon } from "@mui/material";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 
 function Layout() {
 
     const navigate = useNavigate();
-
     const [open, setOpen] = React.useState(true);
 
-    const [auth, setAuth] = React.useState(() => {
-        return !!localStorage.getItem("token")
-    });
+    const auth = !!localStorage.getItem("token")
 
     React.useEffect(() => {
         if (!auth) {
             navigate("/")
         }
-    }, [auth]);
+    }, [auth, navigate]);
 
 
     const drawerWidth = 240;
@@ -44,6 +41,7 @@ function Layout() {
                     >
                         <MenuIcon />
                     </IconButton>
+                    <img style={{height: '35px'}} src="/src/assets/img/organizit_horizontal_logo.png"></img>
                 </Toolbar>
             </AppBar>
 
@@ -73,6 +71,20 @@ function Layout() {
                             <HomeRoundedIcon />
                         </ListItemIcon>
                         <ListItemText primary="Principal" />
+                    </ListItemButton>
+                </ListItem>
+
+                <ListItem disablePadding>
+                    <ListItemButton onClick={() => navigate("/products")} sx={{
+                        color: "white",
+                        "&:hover": {
+                            backgroundColor: "#8240f4",
+                        },
+                    }}>
+                        <ListItemIcon sx={{ color: "white" }}>
+                            <Inventory2RoundedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Produtos" />
                     </ListItemButton>
                 </ListItem>
 
