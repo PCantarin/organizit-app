@@ -13,7 +13,6 @@ function Users() {
         async function fetchUsers() {
             try {
                 const data = await getUsers();
-                console.log(data)
                 setRows(data)
             }
             catch (error) {
@@ -24,12 +23,18 @@ function Users() {
     }, []);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 70, align: 'center', headerAlign: 'center'},
+        { field: 'id', headerName: 'ID', width: 70, align: 'center', headerAlign: 'center' },
         { field: 'name', headerName: 'Name', width: 200, align: 'center', headerAlign: 'center' },
-        { field: 'username', headerName: 'Usuário', width: 200, align: 'center', headerAlign: 'center'},
+        { field: 'username', headerName: 'Usuário', width: 200, align: 'center', headerAlign: 'center' },
         { field: 'role', headerName: 'Nível de permissão', width: 200, align: 'center', headerAlign: 'center' },
-        { field: 'createdAt', headerName: 'Criado em:', width: 200, align: 'center', headerAlign: 'center' }
+        {
+            field: 'createdAt', headerName: 'Criado em:', width: 200, align: 'center', headerAlign: 'center', valueFormatter: (value => {
+                if (!value) return "";
+                else return new Intl.DateTimeFormat('pt-BR').format(new Date(value));
+            })
+        }
     ];
+
 
     const paginationModel = { page: 0, pageSize: 10 };
 
@@ -37,7 +42,7 @@ function Users() {
         <Box>
             <h1>Usuários</h1>
 
-            <Divider sx={{marginBottom: '20px', border: 'solid 1px', borderRadius: '10px'}} />
+            <Divider sx={{ marginBottom: '20px', border: 'solid 1px', borderRadius: '10px' }} />
 
             <Paper sx={{ maxHeight: 750, width: '100%' }}>
                 <DataGrid

@@ -29,7 +29,7 @@ function Layout() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="relative" sx={{ backgroundColor: "#6d28d9", zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar position="relative" elevation={1} sx={{ backgroundColor: "#6d28d9", zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <IconButton
                         size="large"
