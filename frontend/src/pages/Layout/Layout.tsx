@@ -9,6 +9,7 @@ import { MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Drawer } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import {
   ListItem,
   ListItemButton,
@@ -73,7 +74,7 @@ function Layout() {
             src="/src/assets/img/organizit_horizontal_logo.png"
           ></img>
 
-            <Box sx={{ flexGrow: 1 }}/>
+          <Box sx={{ flexGrow: 1 }} />
 
           <div>
             <IconButton
@@ -101,7 +102,10 @@ function Layout() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleLogout}>Sair</MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <LogoutRoundedIcon />
+                Sair
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>
