@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import { AxiosError } from "axios";
 
 function Login() {
 
@@ -18,8 +19,10 @@ function Login() {
       localStorage.setItem("token", data.token);
       navigate("/home");
     }
-    catch (error: any) {
-      if (error.response?.status === 401) {
+    catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response?.status === 401) {
         setErrorMessage("Usuário ou senha incorretos.")
       }
     }
