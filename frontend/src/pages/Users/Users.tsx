@@ -23,12 +23,12 @@ function Users() {
     }, []);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 70, align: 'center', headerAlign: 'center' },
-        { field: 'name', headerName: 'Name', width: 200, align: 'center', headerAlign: 'center' },
-        { field: 'username', headerName: 'Usuário', width: 200, align: 'center', headerAlign: 'center' },
-        { field: 'role', headerName: 'Nível de permissão', width: 200, align: 'center', headerAlign: 'center' },
+        { field: 'id', flex: 1, headerName: 'ID', width: 70, align: 'center', headerAlign: 'center' },
+        { field: 'name', flex: 3, headerName: 'Name', width: 200, align: 'center', headerAlign: 'center' },
+        { field: 'username', flex: 2, headerName: 'Usuário', width: 200, align: 'center', headerAlign: 'center' },
+        { field: 'role', flex: 1, headerName: 'Nível de permissão', width: 200, align: 'center', headerAlign: 'center' },
         {
-            field: 'createdAt', headerName: 'Criado em:', width: 200, align: 'center', headerAlign: 'center', valueFormatter: (value => {
+            field: 'createdAt', flex: 2, headerName: 'Criado em:', width: 200, align: 'center', headerAlign: 'center', valueFormatter: (value => {
                 if (!value) return "";
                 else return new Intl.DateTimeFormat('pt-BR').format(new Date(value));
             })
@@ -50,7 +50,7 @@ function Users() {
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[10]}
-                    sx={{ border: 0 }}
+                    sx={{ border: 0, borderRadius: '10px', '& .MuiDataGrid-columnHeader': { backgroundColor: '#ebebeb', fontSize: 16, fontWeight: 'bold' } }}
                 />
             </Paper>
         </Box>
