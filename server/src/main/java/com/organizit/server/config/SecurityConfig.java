@@ -39,6 +39,8 @@ public class SecurityConfig {
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/h2-console/**").permitAll()
 				.requestMatchers("/auth/login").permitAll()
+				.requestMatchers("/swagger-ui/**").permitAll()
+				.requestMatchers("/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated())
 		.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 		
