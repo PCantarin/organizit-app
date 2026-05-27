@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.organizit.server.repositories.UserRepository;
 
 import jakarta.servlet.FilterChain;
@@ -30,6 +31,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		
+		try {
 		String token = this.recoverToken(request);
 		if (token != null) {
 			String login = tokenService.validateToken(token);
@@ -42,6 +45,11 @@ public class SecurityFilter extends OncePerRequestFilter {
 		}
 		
 		filterChain.doFilter(request, response);
+		}
+		catch(JWTVerificationException e) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().write("Invalid ou expirated token.");
+		}
 
 	}
 

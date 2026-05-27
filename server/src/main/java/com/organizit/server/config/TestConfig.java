@@ -37,9 +37,9 @@ public class TestConfig implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		User u1 = new User(null, "Pedro", "pedrohsc", UserRole.ADMIN, Instant.now(), passwordEncoder.encode("123"));
-		User u2 = new User(null, "Henrique", "henriquesc", UserRole.ADMIN, Instant.now(), passwordEncoder.encode("321"));
-		User u3 = new User(null, "Cantarin", "cantarin", UserRole.ADMIN, Instant.now(), passwordEncoder.encode("213"));
+		User u1 = new User(null, "Pedro Henrique Silva Cantarin", "pedrohsc", UserRole.ADMIN, Instant.now(), passwordEncoder.encode("123"));
+		User u2 = new User(null, "Henrique Silva Cantarin", "henriquesc", UserRole.ADMIN, Instant.now(), passwordEncoder.encode("321"));
+		User u3 = new User(null, "Cantarin Henrique Silva", "cantarin", UserRole.ADMIN, Instant.now(), passwordEncoder.encode("213"));
 		
 		Product p1 = new Product(null, "Ethernet Cable", null, "3 meters long", Instant.now(), 40);
 		Product p2 = new Product(null, "HDMI Cable", null, "1 meter long", Instant.now(), 27);
