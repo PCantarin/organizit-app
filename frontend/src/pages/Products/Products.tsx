@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,10 +16,12 @@ import type {
   CreateProductDTO,
   Product,
 } from "../../services/productService.ts";
-import SearchInput from "../../components/SearchInput.tsx";
+import SearchInput from "../../components/Inputs/SearchInput.tsx";
 import PageTitle from "../../components/PageTitle.tsx";
 import PageDivider from "../../components/PageDivider.tsx";
 import ModalHeader from "../../components/ModalHeader.tsx";
+import SimpleButton from "../../components/Buttons/SimpleButton.tsx";
+import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -140,24 +141,7 @@ function Products() {
       >
         <SearchInput value={filterText} onChange={handleFilterChange} />
 
-        <Button
-          onClick={handleClickOpen}
-          variant="contained"
-          sx={{
-            backgroundColor: "#7e57c2",
-            borderRadius: "8px",
-            textTransform: "none",
-            fontFamily: "inherit",
-            fontWeight: 700,
-            fontSize: 16,
-            height: 40,
-            "&:hover": {
-              backgroundColor: "#6a46b0",
-            },
-          }}
-        >
-          Novo produto
-        </Button>
+        <HeaderButton text="Novo Produto" onClick={handleClickOpen} />
       </Box>
 
       <Paper sx={{ maxHeight: 750, width: "100%" }}>
@@ -248,24 +232,7 @@ function Products() {
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>
-              <Button
-                autoFocus
-                variant="contained"
-                type="submit"
-                sx={{
-                  backgroundColor: "#7e57c2",
-                  borderRadius: "6px",
-                  textTransform: "none",
-                  fontFamily: "inherit",
-                  fontWeight: 700,
-                  fontSize: 16,
-                  "&:hover": {
-                    backgroundColor: "#6a46b0",
-                  },
-                }}
-              >
-                Cadastrar
-              </Button>
+              <SimpleButton type="submit" text="Cadastrar" />
             </DialogActions>
           </form>
         </DialogContent>
