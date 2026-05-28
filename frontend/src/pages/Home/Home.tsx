@@ -1,12 +1,11 @@
 import { Box } from "@mui/material";
+import PageTitle from "../../components/PageTitle";
 
 function Home() {
 
     return (
-        <Box sx={{
-            height: "90vh",
-        }}>
-            <h1>Bem-vindo!</h1>
+        <Box>
+            <PageTitle text="Bem-vindo, usuário!" />
         </Box>
     )
 

@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
+import PageTitle from "../../components/PageTitle";
 
 function Users() {
   const [rows, setRows] = useState<User[]>([]);
@@ -71,7 +72,7 @@ function Users() {
 
   return (
     <Box>
-      <h1>Usuários</h1>
+      <PageTitle text="Usuários" />
 
       <Divider
         sx={{ marginBottom: "20px", border: "solid 1px", borderRadius: "10px" }}

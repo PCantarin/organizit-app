@@ -5,21 +5,37 @@ import type { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { getProducts } from "../../services/productService.ts";
 import type { Product } from "../../services/productService.ts";
+import SearchInput from "../../components/SearchInput.tsx";
+import PageTitle from "../../components/PageTitle.tsx";
 
 function Products() {
-  const [rows, setRows] = useState<Product[]>();
-
+  const [products, setProducts] = useState<Product[]>([]);
+  
+  //fetching product data here
   useEffect(() => {
     async function fetchProducts() {
       try {
         const data = await getProducts();
-        setRows(data);
+        setProducts(data);
       } catch (error) {
         console.error(error);
       }
     }
     fetchProducts();
   }, []);
+  
+
+  const [filterText, setFilterText] = useState("");
+
+  const handleFilterChange = (value: string) => {
+    setFilterText(value);
+  };
+
+  const filteredValues = products.filter(product => 
+    product.id.toString().includes(filterText) ||
+    product.name.toLowerCase().includes(filterText.toLowerCase()) ||
+    product.description.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   const columns: GridColDef[] = [
     {
@@ -38,7 +54,7 @@ function Products() {
       headerAlign: "center",
     },
     {
-      field: "desc",
+      field: "description",
       headerName: "Descrição",
       flex: 6,
       minWidth: 350,
@@ -69,22 +85,22 @@ function Products() {
   const paginationModel = { page: 0, pageSize: 10 };
 
   return (
-    <Box
-      sx={{
-        height: "90vh",
-      }}
-    >
-      <h1>Produtos</h1>
+    <Box>
+      <PageTitle text="Produtos" />
 
       <Divider
         sx={{ marginBottom: "20px", border: "solid 1px", borderRadius: "10px" }}
       />
 
+      <SearchInput value={filterText} onChange={handleFilterChange} />
+
       <Paper sx={{ maxHeight: 750, width: "100%" }}>
         <DataGrid
-          rows={rows}
+          rows={filteredValues}
           columns={columns}
-          initialState={{ pagination: { paginationModel } }}
+          initialState={{
+            pagination: { paginationModel }
+          }}
           pageSizeOptions={[10]}
           sx={{
             border: 0,
