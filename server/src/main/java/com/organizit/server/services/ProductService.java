@@ -1,5 +1,6 @@
 package com.organizit.server.services;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,18 @@ public class ProductService {
 		return repository.findById(id).get();
 	}
 
+	public Product addNewProduct(Product product) {
+		product.setDateInsert(Instant.now());
+		return repository.save(product);
+	}
+
 	public Product removeProduct(Long id, Integer quantity) {
 		Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
-		if(quantity <= 0) {
+		if (quantity <= 0) {
 			throw new IllegalArgumentException("The quantity must be greater than 0");
 		}
-		
+
 		if (product.getQuantity() < quantity) {
 			throw new RuntimeException("Insufficient stock");
 		}

@@ -11,9 +11,9 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  async function formHandle(e: React.SubmitEvent) {
+  async function formHandle(event: React.SubmitEvent) {
 
-    e.preventDefault();
+    event.preventDefault();
     try {
       const data = await login(user, password);
       localStorage.setItem("token", data.token);
