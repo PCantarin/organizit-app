@@ -22,7 +22,7 @@ import ModalHeader from "../../components/ModalHeader.tsx";
 import SimpleButton from "../../components/Buttons/SimpleButton.tsx";
 import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
 import FormTextField from "../../components/Inputs/FormTextField.tsx";
-import FormNumberField from "../../components/Inputs/FormNumberFields.tsx";
+import FormNumberField from "../../components/Inputs/FormNumberField.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -178,7 +178,7 @@ function Products() {
 
             <FormTextField name="name" label="Nome" required={true} />
             <FormTextField name="description" label="Descrição" required={true} />
-            <FormNumberField name="quantity" label="Quantidade inicial"/>
+            <FormNumberField name="quantity" label="Quantidade inicial" defaultValue={0} required={true}/>
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>

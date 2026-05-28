@@ -15,14 +15,13 @@ function SimpleButton({text, type, onClick}: SimpleButtonProps) {
       type={type}
       onClick={onClick}
       sx={{
-        backgroundColor: "#7e57c2",
+        backgroundColor: "#6d28d9",
         borderRadius: "6px",
         textTransform: "none",
-        fontFamily: "inherit",
-        fontWeight: 700,
+        fontWeight: 600,
         fontSize: 16,
         "&:hover": {
-          backgroundColor: "#6a46b0",
+          backgroundColor: "#5417b5",
         },
       }}
     >
