@@ -4,7 +4,6 @@ import {
   DialogActions,
   DialogContent,
   Divider,
-  TextField,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
@@ -22,6 +21,8 @@ import PageDivider from "../../components/PageDivider.tsx";
 import ModalHeader from "../../components/ModalHeader.tsx";
 import SimpleButton from "../../components/Buttons/SimpleButton.tsx";
 import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
+import FormTextField from "../../components/Inputs/FormTextField.tsx";
+import FormNumberField from "../../components/Inputs/FormNumberFields.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -174,61 +175,10 @@ function Products() {
         />
         <DialogContent>
           <form onSubmit={addNewProduct}>
-            <TextField
-              autoFocus
-              required
-              name="name"
-              label="Nome"
-              fullWidth
-              variant="standard"
-              sx={{
-                "& .MuiInput-underline:after": {
-                  borderBottomColor: "#7b1fa2",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#7b1fa2",
-                },
-                mt: "20px",
-              }}
-            />
 
-            <TextField
-              required
-              name="description"
-              label="Descrição"
-              fullWidth
-              variant="standard"
-              sx={{
-                "& .MuiInput-underline:after": {
-                  borderBottomColor: "#7b1fa2",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#7b1fa2",
-                },
-                mt: "20px",
-              }}
-            />
-
-            <TextField
-              required
-              name="quantity"
-              label="Quantidade inicial"
-              type="number"
-              fullWidth
-              variant="standard"
-              slotProps={{
-                htmlInput: { min: 0 },
-              }}
-              sx={{
-                "& .MuiInput-underline:after": {
-                  borderBottomColor: "#7b1fa2",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "#7b1fa2",
-                },
-                mt: "20px",
-              }}
-            />
+            <FormTextField name="name" label="Nome" required={true} />
+            <FormTextField name="description" label="Descrição" required={true} />
+            <FormNumberField name="quantity" label="Quantidade inicial"/>
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>

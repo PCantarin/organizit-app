@@ -18,8 +18,8 @@ function HeaderButton({text, type, onClick}: HeaderButtonProps){
             borderRadius: "8px",
             textTransform: "none",
             fontFamily: "inherit",
-            fontWeight: 700,
-            fontSize: 16,
+            fontWeight: 600,
+            fontSize: 15,
             height: 40,
             "&:hover": {
               backgroundColor: "#6a46b0",
