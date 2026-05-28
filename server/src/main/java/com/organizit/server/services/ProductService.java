@@ -13,13 +13,27 @@ public class ProductService {
 
 	@Autowired
 	public ProductRepository repository;
-			
-	public List<Product> findAll(){
+
+	public List<Product> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Product findById(Long id) {
 		return repository.findById(id).get();
 	}
-	
+
+	public Product removeProduct(Long id, Integer quantity) {
+		Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+
+		if(quantity <= 0) {
+			throw new IllegalArgumentException("The quantity must be greater than 0");
+		}
+		
+		if (product.getQuantity() < quantity) {
+			throw new RuntimeException("Insufficient stock");
+		}
+		product.setQuantity(product.getQuantity() - quantity);
+
+		return repository.save(product);
+	}
 }
