@@ -1,9 +1,11 @@
 import {
   Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   Divider,
+  Stack,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
@@ -23,6 +25,8 @@ import SimpleButton from "../../components/Buttons/SimpleButton.tsx";
 import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
 import FormTextField from "../../components/Inputs/FormTextField.tsx";
 import FormNumberField from "../../components/Inputs/FormNumberField.tsx";
+import RemoveButton from "../../components/Buttons/ControlButton.tsx";
+import ControlButton from "../../components/Buttons/ControlButton.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -98,7 +102,7 @@ function Products() {
     {
       field: "description",
       headerName: "Descrição",
-      flex: 6,
+      flex: 3,
       minWidth: 350,
       headerAlign: "center",
     },
@@ -120,6 +124,29 @@ function Products() {
       valueFormatter: (value) => {
         if (!value) return "";
         else return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
+      },
+    },
+    {
+      field: "actions",
+      headerName: "Ações",
+      flex: 2,
+      align: "center",
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => {
+        return (
+          <Stack direction="row" spacing={1} sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            <ControlButton text="REM" type="remove" />
+            <ControlButton text="ADD" type="add" />
+          </Stack>
+        );
       },
     },
   ];
@@ -153,6 +180,7 @@ function Products() {
             pagination: { paginationModel },
           }}
           pageSizeOptions={[10]}
+          rowSelection={false}
           sx={{
             border: 0,
             borderRadius: "10px",
@@ -178,7 +206,7 @@ function Products() {
 
             <FormTextField name="name" label="Nome" required={true} />
             <FormTextField name="description" label="Descrição" required={true} />
-            <FormNumberField name="quantity" label="Quantidade inicial" defaultValue={0} required={true}/>
+            <FormNumberField name="quantity" label="Quantidade inicial" defaultValue={0} required={true} />
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>
