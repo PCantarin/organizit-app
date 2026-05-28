@@ -1,10 +1,11 @@
-import { Box, Divider } from "@mui/material";
+import { Box } from "@mui/material";
 import { getUsers, type User } from "../../services/userService";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import PageTitle from "../../components/PageTitle";
+import PageDivider from "../../components/PageDivider";
 
 function Users() {
   const [rows, setRows] = useState<User[]>([]);
@@ -74,9 +75,8 @@ function Users() {
     <Box>
       <PageTitle text="Usuários" />
 
-      <Divider
-        sx={{ marginBottom: "20px", border: "solid 1px", borderRadius: "10px" }}
-      />
+      <PageDivider />
+
 
       <Paper sx={{ maxHeight: 750, width: "100%" }}>
         <DataGrid

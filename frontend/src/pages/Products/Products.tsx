@@ -1,4 +1,4 @@
-import { Box, Divider } from "@mui/material";
+import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
@@ -7,6 +7,7 @@ import { getProducts } from "../../services/productService.ts";
 import type { Product } from "../../services/productService.ts";
 import SearchInput from "../../components/SearchInput.tsx";
 import PageTitle from "../../components/PageTitle.tsx";
+import PageDivider from "../../components/PageDivider.tsx";
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -88,9 +89,7 @@ function Products() {
     <Box>
       <PageTitle text="Produtos" />
 
-      <Divider
-        sx={{ marginBottom: "20px", border: "solid 1px", borderRadius: "10px" }}
-      />
+      <PageDivider />
 
       <SearchInput value={filterText} onChange={handleFilterChange} />
 
