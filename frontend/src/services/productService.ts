@@ -16,9 +16,7 @@ export type CreateProductDTO = {
 }
 
 export async function getProducts(): Promise<Product[]> {
-
   const response = await api.get<Product[]>("/products");
-
   return response.data.map((product) => ({
     ...product,
     dateInsert: new Date(product.dateInsert),
@@ -26,8 +24,11 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function createProduct(product: CreateProductDTO) {
-
   const response = await api.post("/products", product);
+  return response.data;
+}
 
+export async function removeProduct(id: number, quantity:number) {
+  const response = await api.patch(`/products/${id}/remove/${quantity}`)
   return response.data;
 }

@@ -1,18 +1,19 @@
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   Divider,
   Stack,
+  Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { createProduct, getProducts } from "../../services/productService.ts";
+import { createProduct, getProducts, removeProduct } from "../../services/productService.ts";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
+import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import type {
   CreateProductDTO,
   Product,
@@ -25,11 +26,15 @@ import SimpleButton from "../../components/Buttons/SimpleButton.tsx";
 import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
 import FormTextField from "../../components/Inputs/FormTextField.tsx";
 import FormNumberField from "../../components/Inputs/FormNumberField.tsx";
-import RemoveButton from "../../components/Buttons/ControlButton.tsx";
 import ControlButton from "../../components/Buttons/ControlButton.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
+  const [filterText, setFilterText] = useState("");
+  const [openNewProduct, setOpenNewProduct] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [openRemoveProduct, setOpenRemoveProduct] = useState(false);
+  const [openAddProduct, setOpenAddProduct] = useState(false);
 
   //fetching product data here
   useEffect(() => {
@@ -44,20 +49,21 @@ function Products() {
     fetchProducts();
   }, []);
 
-  const [filterText, setFilterText] = useState("");
-  const [open, setOpen] = useState(false);
-
   const handleFilterChange = (value: string) => {
     setFilterText(value);
   };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenNewProduct(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseNewProduct = () => {
+    setOpenNewProduct(false);
   };
+
+  const handleCloseRemoveProduct = () => {
+    setOpenRemoveProduct(false);
+  }
 
   const addNewProduct = async (event: React.SubmitEvent) => {
     event.preventDefault();
@@ -73,7 +79,27 @@ function Products() {
     const created = await createProduct(product);
     setProductList((prev) => [...prev, created]);
 
-    setOpen(false);
+    setOpenNewProduct(false);
+  };
+
+  const handleRemoveProduct = async (event: React.SubmitEvent) => {
+    event.preventDefault();
+    if (!selectedProduct) return;
+
+    const formData = new FormData(event.target);
+    const quantity = Number(formData.get("quantity") ?? 0);
+
+    await removeProduct(selectedProduct.id, quantity);
+
+    setProductList((products) =>
+      products.map((product) =>
+        product.id === selectedProduct.id
+          ? { ...product, quantity: product.quantity - quantity }
+          : product
+      )
+    );
+
+    setOpenRemoveProduct(false)
   };
 
   const filteredValues = productList.filter(
@@ -128,7 +154,8 @@ function Products() {
     },
     {
       field: "actions",
-      headerName: "Ações",
+      headerName: "",
+      minWidth: 200,
       flex: 2,
       align: "center",
       headerAlign: "center",
@@ -143,7 +170,10 @@ function Products() {
             alignItems: "center",
             justifyContent: "center",
           }}>
-            <ControlButton text="REM" type="remove" />
+            <ControlButton text="REM" type="remove" onClick={() => {
+              setSelectedProduct(params.row);
+              setOpenRemoveProduct(true);
+            }} />
             <ControlButton text="ADD" type="add" />
           </Stack>
         );
@@ -196,7 +226,7 @@ function Products() {
         />
       </Paper>
 
-      <Dialog onClose={handleClose} open={open}>
+      <Dialog onClose={handleCloseNewProduct} open={openNewProduct}>
         <ModalHeader
           text="Salvar novo produto"
           icon={AddCircleOutlineRoundedIcon}
@@ -211,6 +241,24 @@ function Products() {
             <Divider sx={{ mt: 1 }} />
             <DialogActions>
               <SimpleButton type="submit" text="Cadastrar" />
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+
+      <Dialog onClose={handleCloseRemoveProduct} open={openRemoveProduct}>
+        <ModalHeader
+          text="Retirar"
+          icon={RemoveCircleOutlineRoundedIcon}
+        />
+        <DialogContent>
+          <form onSubmit={handleRemoveProduct}>
+            <FormNumberField name="quantity" label="Quantidade" defaultValue={0} required={true} />
+
+            <Divider sx={{ mt: 1 }} />
+            <DialogActions>
+              <SimpleButton type="submit" text="Retirar" />
             </DialogActions>
           </form>
         </DialogContent>

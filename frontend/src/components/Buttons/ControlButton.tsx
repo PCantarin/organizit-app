@@ -1,11 +1,13 @@
 import { Button } from "@mui/material";
+import type { MouseEvent } from "react";
 
 export type ControlButtonProps = {
     text: string;
     type: "add" | "remove";
+    onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
-function ControlButton({ text, type }: ControlButtonProps) {
+function ControlButton({ text, type, onClick }: ControlButtonProps) {
 
     const styles = {
         add: {
@@ -26,6 +28,7 @@ function ControlButton({ text, type }: ControlButtonProps) {
         <Button
             size="small"
             variant="contained"
+            onClick={onClick}
             sx={styles[type]}
         >
             {text}
