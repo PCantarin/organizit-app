@@ -11,9 +11,10 @@ import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { createProduct, getProducts, removeProduct } from "../../services/productService.ts";
+import { addProduct, createProduct, getProducts, removeProduct } from "../../services/productService.ts";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import type {
   CreateProductDTO,
   Product,
@@ -65,6 +66,10 @@ function Products() {
     setOpenRemoveProduct(false);
   }
 
+  const handleCloseAddProduct = () => {
+    setOpenAddProduct(false);
+  }
+
   const addNewProduct = async (event: React.SubmitEvent) => {
     event.preventDefault();
 
@@ -100,6 +105,26 @@ function Products() {
     );
 
     setOpenRemoveProduct(false)
+  };
+
+  const handleAddProduct = async (event: React.SubmitEvent) => {
+    event.preventDefault();
+    if (!selectedProduct) return;
+
+    const formData = new FormData(event.target);
+    const quantity = Number(formData.get("quantity") ?? 0);
+
+    await addProduct(selectedProduct.id, quantity);
+
+    setProductList((products) =>
+      products.map((product) =>
+        product.id === selectedProduct.id
+          ? { ...product, quantity: product.quantity + quantity }
+          : product
+      )
+    );
+
+    setOpenAddProduct(false)
   };
 
   const filteredValues = productList.filter(
@@ -174,7 +199,10 @@ function Products() {
               setSelectedProduct(params.row);
               setOpenRemoveProduct(true);
             }} />
-            <ControlButton text="ADD" type="add" />
+            <ControlButton text="ADD" type="add" onClick={() => {
+              setSelectedProduct(params.row);
+              setOpenAddProduct(true);
+            }} />
           </Stack>
         );
       },
@@ -229,7 +257,7 @@ function Products() {
       <Dialog onClose={handleCloseNewProduct} open={openNewProduct}>
         <ModalHeader
           text="Salvar novo produto"
-          icon={AddCircleOutlineRoundedIcon}
+          icon={AddRoundedIcon}
         />
         <DialogContent>
           <form onSubmit={addNewProduct}>
@@ -258,7 +286,25 @@ function Products() {
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>
-              <SimpleButton type="submit" text="Retirar" />
+              <SimpleButton type="submit" text="Confirmar" />
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+
+      <Dialog onClose={handleCloseAddProduct} open={openAddProduct}>
+        <ModalHeader
+          text="Inserir"
+          icon={AddCircleOutlineRoundedIcon}
+        />
+        <DialogContent>
+          <form onSubmit={handleAddProduct}>
+            <FormNumberField name="quantity" label="Quantidade" defaultValue={0} required={true} />
+
+            <Divider sx={{ mt: 1 }} />
+            <DialogActions>
+              <SimpleButton type="submit" text="Confirmar" />
             </DialogActions>
           </form>
         </DialogContent>
