@@ -5,16 +5,20 @@ import {
   DialogContent,
   Divider,
   Stack,
-  Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { addProduct, createProduct, getProducts, removeProduct } from "../../services/productService.ts";
+import {
+  addProduct,
+  createProduct,
+  getProducts,
+  removeProduct,
+} from "../../services/productService.ts";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import type {
   CreateProductDTO,
   Product,
@@ -28,6 +32,7 @@ import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
 import FormTextField from "../../components/Inputs/FormTextField.tsx";
 import FormNumberField from "../../components/Inputs/FormNumberField.tsx";
 import ControlButton from "../../components/Buttons/ControlButton.tsx";
+import { errorMessage, successMessage } from "../../services/messageService.ts";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -64,11 +69,11 @@ function Products() {
 
   const handleCloseRemoveProduct = () => {
     setOpenRemoveProduct(false);
-  }
+  };
 
   const handleCloseAddProduct = () => {
     setOpenAddProduct(false);
-  }
+  };
 
   const addNewProduct = async (event: React.SubmitEvent) => {
     event.preventDefault();
@@ -81,10 +86,15 @@ function Products() {
       quantity: Number(data.quantity),
     };
 
-    const created = await createProduct(product);
-    setProductList((prev) => [...prev, created]);
+    try {
+      const created = await createProduct(product);
+      setProductList((prev) => [...prev, created]);
 
-    setOpenNewProduct(false);
+      setOpenNewProduct(false);
+      successMessage(`${data.name} adicionado ao estoque!`);
+    } catch {
+      errorMessage("Ocorreu um erro ao tentar adicionar o produto!");
+    }
   };
 
   const handleRemoveProduct = async (event: React.SubmitEvent) => {
@@ -94,17 +104,31 @@ function Products() {
     const formData = new FormData(event.target);
     const quantity = Number(formData.get("quantity") ?? 0);
 
-    await removeProduct(selectedProduct.id, quantity);
+    if (quantity === 0) {
+      errorMessage("A quantidade precisa ser maior do que zero!");
+      return;
+    }
+    if (quantity > selectedProduct.quantity) {
+      errorMessage("Estoque insuficiente!");
+      return;
+    }
 
-    setProductList((products) =>
-      products.map((product) =>
-        product.id === selectedProduct.id
-          ? { ...product, quantity: product.quantity - quantity }
-          : product
-      )
-    );
+    try {
+      await removeProduct(selectedProduct.id, quantity);
 
-    setOpenRemoveProduct(false)
+      setProductList((products) =>
+        products.map((product) =>
+          product.id === selectedProduct.id
+            ? { ...product, quantity: product.quantity - quantity }
+            : product,
+        ),
+      );
+
+      setOpenRemoveProduct(false);
+      successMessage("Retirada efetuada com sucesso!");
+    } catch {
+      errorMessage("Ocorreu um erro ao remover o produto.");
+    }
   };
 
   const handleAddProduct = async (event: React.SubmitEvent) => {
@@ -120,11 +144,11 @@ function Products() {
       products.map((product) =>
         product.id === selectedProduct.id
           ? { ...product, quantity: product.quantity + quantity }
-          : product
-      )
+          : product,
+      ),
     );
 
-    setOpenAddProduct(false)
+    setOpenAddProduct(false);
   };
 
   const filteredValues = productList.filter(
@@ -188,21 +212,33 @@ function Products() {
       filterable: false,
       renderCell: (params) => {
         return (
-          <Stack direction="row" spacing={1} sx={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-            <ControlButton text="REM" type="remove" onClick={() => {
-              setSelectedProduct(params.row);
-              setOpenRemoveProduct(true);
-            }} />
-            <ControlButton text="ADD" type="add" onClick={() => {
-              setSelectedProduct(params.row);
-              setOpenAddProduct(true);
-            }} />
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ControlButton
+              text="REM"
+              type="remove"
+              onClick={() => {
+                setSelectedProduct(params.row);
+                setOpenRemoveProduct(true);
+              }}
+            />
+            <ControlButton
+              text="ADD"
+              type="add"
+              onClick={() => {
+                setSelectedProduct(params.row);
+                setOpenAddProduct(true);
+              }}
+            />
           </Stack>
         );
       },
@@ -255,16 +291,20 @@ function Products() {
       </Paper>
 
       <Dialog onClose={handleCloseNewProduct} open={openNewProduct}>
-        <ModalHeader
-          text="Salvar novo produto"
-          icon={AddRoundedIcon}
-        />
+        <ModalHeader text="Salvar novo produto" icon={AddRoundedIcon} />
         <DialogContent>
           <form onSubmit={addNewProduct}>
-
             <FormTextField name="name" label="Nome" required={true} />
-            <FormTextField name="description" label="Descrição" required={true} />
-            <FormNumberField name="quantity" label="Quantidade inicial" defaultValue={0} required={true} />
+            <FormTextField
+              name="description"
+              label="Descrição"
+              required={true}
+            />
+            <FormNumberField
+              name="quantity"
+              label="Quantidade inicial"
+              required={true}
+            />
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>
@@ -274,15 +314,15 @@ function Products() {
         </DialogContent>
       </Dialog>
 
-
       <Dialog onClose={handleCloseRemoveProduct} open={openRemoveProduct}>
-        <ModalHeader
-          text="Retirar"
-          icon={RemoveCircleOutlineRoundedIcon}
-        />
+        <ModalHeader text="Retirar" icon={RemoveCircleOutlineRoundedIcon} />
         <DialogContent>
           <form onSubmit={handleRemoveProduct}>
-            <FormNumberField name="quantity" label="Quantidade" defaultValue={0} required={true} />
+            <FormNumberField
+              name="quantity"
+              label="Quantidade"
+              required={true}
+            />
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>
@@ -292,15 +332,15 @@ function Products() {
         </DialogContent>
       </Dialog>
 
-
       <Dialog onClose={handleCloseAddProduct} open={openAddProduct}>
-        <ModalHeader
-          text="Inserir"
-          icon={AddCircleOutlineRoundedIcon}
-        />
+        <ModalHeader text="Inserir" icon={AddCircleOutlineRoundedIcon} />
         <DialogContent>
           <form onSubmit={handleAddProduct}>
-            <FormNumberField name="quantity" label="Quantidade" defaultValue={0} required={true} />
+            <FormNumberField
+              name="quantity"
+              label="Quantidade"
+              required={true}
+            />
 
             <Divider sx={{ mt: 1 }} />
             <DialogActions>

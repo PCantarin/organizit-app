@@ -19,6 +19,7 @@ import {
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
+import { Toaster } from "react-hot-toast";
 
 function Layout() {
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ function Layout() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Toaster position="bottom-left" reverseOrder={false} />
       <AppBar
         position="relative"
         elevation={1}

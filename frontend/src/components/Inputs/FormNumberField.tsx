@@ -5,15 +5,13 @@ export type FormNumberFieldProps = {
     label: string;
     variant?: "outlined" | "filled" | "standard";
     required?: boolean;
-    defaultValue?: number;
 }
 
-function FormNumberField({ name, label, variant = "standard", required, defaultValue = 0 }: FormNumberFieldProps) {
+function FormNumberField({ name, label, variant = "standard", required}: FormNumberFieldProps) {
 
     return (
         <TextField
             autoFocus
-            defaultValue={defaultValue}
             required={required}
             name={name}
             label={label}
