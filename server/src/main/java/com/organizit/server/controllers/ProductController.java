@@ -42,6 +42,12 @@ public class ProductController {
 		return ResponseEntity.created(uri).body(product);
 	}
 	
+	@PatchMapping(value = "/{id}/add/{quantity}")
+	public ResponseEntity<Product> addProduct(@PathVariable Long id, @PathVariable int quantity){
+		Product obj = service.addProduct(id, quantity);
+		return ResponseEntity.ok(obj);
+	}
+	
 	@PatchMapping(value = "/{id}/remove/{quantity}")
 	public ResponseEntity<Product> removeProduct(@PathVariable Long id, @PathVariable int quantity){
 		Product obj = service.removeProduct(id, quantity);

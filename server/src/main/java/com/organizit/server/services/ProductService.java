@@ -27,6 +27,17 @@ public class ProductService {
 		product.setDateInsert(Instant.now());
 		return repository.save(product);
 	}
+	
+	public Product addProduct(Long id, Integer quantity) {
+		Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+		
+		if(quantity <= 0) {
+			throw new IllegalArgumentException("The quantity must be greater than 0");
+		}
+		product.setQuantity(product.getQuantity() + quantity);
+		
+		return repository.save(product);
+	}
 
 	public Product removeProduct(Long id, Integer quantity) {
 		Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
