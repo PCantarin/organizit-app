@@ -138,17 +138,29 @@ function Products() {
     const formData = new FormData(event.target);
     const quantity = Number(formData.get("quantity") ?? 0);
 
-    await addProduct(selectedProduct.id, quantity);
+    if (quantity <= 0) {
+      errorMessage("A quantidade a ser adicionada precisa ser maior do que 0.") 
+      return;
+    }
+    
+    try {
+      await addProduct(selectedProduct.id, quantity);
 
-    setProductList((products) =>
-      products.map((product) =>
-        product.id === selectedProduct.id
-          ? { ...product, quantity: product.quantity + quantity }
-          : product,
-      ),
-    );
+      setProductList((products) =>
+        products.map((product) =>
+          product.id === selectedProduct.id
+            ? { ...product, quantity: product.quantity + quantity }
+            : product,
+        ),
+      );
 
-    setOpenAddProduct(false);
+      setOpenAddProduct(false);
+      successMessage(
+        `Adicionado ${quantity} ao produto ${selectedProduct.name}`,
+      );
+    } catch {
+      errorMessage("Ocorreu um erro ao efetuar a adição do produto.");
+    }
   };
 
   const filteredValues = productList.filter(
