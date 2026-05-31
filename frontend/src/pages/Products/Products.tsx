@@ -20,6 +20,7 @@ import {
 } from "../../services/productService.ts";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
+import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import ModeRoundedIcon from '@mui/icons-material/ModeRounded';
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
@@ -292,7 +293,7 @@ function Products() {
 
   return (
     <Box>
-      <PageTitle text="Produtos" />
+      <PageTitle text="Produtos" icon={Inventory2RoundedIcon} />
 
       <PageDivider />
 
@@ -318,6 +319,7 @@ function Products() {
           }}
           pageSizeOptions={[10]}
           rowSelection={false}
+          localeText={{ noRowsLabel: "Nenhum produto encontrado." }}
           sx={{
             border: 0,
             "& .MuiDataGrid-columnHeader": {

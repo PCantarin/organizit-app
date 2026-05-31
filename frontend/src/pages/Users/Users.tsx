@@ -6,6 +6,7 @@ import type { GridColDef } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import PageTitle from "../../components/PageTitle";
 import PageDivider from "../../components/PageDivider";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 
 function Users() {
   const [rows, setRows] = useState<User[]>([]);
@@ -73,7 +74,7 @@ function Users() {
 
   return (
     <Box>
-      <PageTitle text="Usuários" />
+      <PageTitle text="Usuários" icon={PersonRoundedIcon} />
 
       <PageDivider />
 
