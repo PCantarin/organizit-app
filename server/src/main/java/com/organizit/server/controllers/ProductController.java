@@ -36,13 +36,13 @@ public class ProductController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@PatchMapping(value = "/deactivate/{id}")
+	@PatchMapping(value = "/{id}/deactivate")
 	public ResponseEntity<Void> deactivateProductById(@PathVariable Long id){
 		service.deactivateProductById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PatchMapping(value = "/edit/{id}")
+	@PatchMapping(value = "/{id}")
 	public ResponseEntity<Product> editProduct(@PathVariable Long id, @RequestBody Product product){
 		Product obj = service.editProduct(id, product);
 		return ResponseEntity.ok().body(obj);

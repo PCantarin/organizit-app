@@ -9,10 +9,10 @@ export type Product = {
   quantity: number;
 };
 
-export type CreateProductDTO = {
+export type ProductDTO = {
     name: string,
     description: string,
-    quantity: number
+    quantity?: number
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -23,7 +23,7 @@ export async function getProducts(): Promise<Product[]> {
   }));
 }
 
-export async function createProduct(product: CreateProductDTO) {
+export async function createProduct(product: ProductDTO) {
   const response = await api.post("/products", product);
   return response.data;
 }
@@ -39,6 +39,11 @@ export async function addProduct(id: number, quantity:number) {
 }
 
 export async function deactivateProductById(product: Product) {
-  const response = await api.patch(`/products/${product.id}`)
+  const response = await api.patch(`/products/${product.id}/deactivate`)
+  return response.data;
+}
+
+export async function editProduct(id: number, product: ProductDTO) {
+  const response = await api.patch(`/products/${id}`, product);
   return response.data;
 }

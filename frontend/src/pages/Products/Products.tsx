@@ -15,6 +15,7 @@ import {
   addProduct,
   createProduct,
   deactivateProductById,
+  editProduct,
   getProducts,
   removeProduct,
 } from "../../services/productService.ts";
@@ -25,8 +26,8 @@ import ModeRoundedIcon from '@mui/icons-material/ModeRounded';
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import type {
-  CreateProductDTO,
   Product,
+  ProductDTO,
 } from "../../services/productService.ts";
 import SearchInput from "../../components/Inputs/SearchInput.tsx";
 import PageTitle from "../../components/PageTitle.tsx";
@@ -48,6 +49,7 @@ function Products() {
   const [openRemoveProduct, setOpenRemoveProduct] = useState(false);
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [openDeactivateAlert, setOpenDeactivateAlert] = useState(false);
+  const [openEditProduct, setOpenEditProduct] = useState(false);
 
   //fetching product data here
   useEffect(() => {
@@ -82,12 +84,17 @@ function Products() {
     setOpenAddProduct(false);
   };
 
+  const handleCloseEditProduct = () => {
+    setOpenEditProduct(false);
+  };
+
   const addNewProduct = async (event: React.SubmitEvent) => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
-    const product: CreateProductDTO = {
+
+    const product: ProductDTO = {
       name: data.name as string,
       description: data.description as string,
       quantity: Number(data.quantity),
@@ -186,6 +193,38 @@ function Products() {
     }
   }
 
+  const handleEditProduct = async (event: React.SubmitEvent) => {
+    event.preventDefault();
+
+    if (!selectedProduct) return;
+
+    try {
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries());
+
+      if(data.name.toString().trim() === "" && data.description.toString().trim() === ""){
+        errorMessage("Preencha ao menos um dos campos para edição!")
+        return;
+      }
+
+      const productEdit: ProductDTO = {
+        name: data.name as string,
+        description: data.description as string
+      }
+
+      const editted = await editProduct(selectedProduct.id, productEdit);
+      setProductList((prev) => prev.map((product) =>
+        product.id === selectedProduct.id ? editted : product
+      ));
+
+      setOpenEditProduct(false);
+      successMessage("Produto editado com sucesso!")
+    }
+    catch {
+      errorMessage("Ocorreu um erro ao editar o produto.")
+    }
+  }
+
   const filteredValues = productList.filter(
     (product) =>
       product.id.toString().includes(filterText) ||
@@ -274,7 +313,10 @@ function Products() {
                 setOpenAddProduct(true);
               }}
             />
-            <IconButton>
+            <IconButton onClick={() => {
+              setSelectedProduct(params.row);
+              setOpenEditProduct(true);
+            }}>
               <ModeRoundedIcon />
             </IconButton>
             <IconButton onClick={() => {
@@ -384,6 +426,25 @@ function Products() {
               name="quantity"
               label="Quantidade"
               required={true}
+            />
+
+            <Divider sx={{ mt: 1 }} />
+            <DialogActions>
+              <SimpleButton type="submit" text="Confirmar" />
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog onClose={handleCloseEditProduct} open={openEditProduct}>
+        <ModalHeader text="Editar" icon={ModeRoundedIcon} />
+        <DialogContent>
+          <form onSubmit={handleEditProduct}>
+            <FormTextField name="name" label="Nome" required={false} />
+            <FormTextField
+              name="description"
+              label="Descrição"
+              required={false}
             />
 
             <Divider sx={{ mt: 1 }} />

@@ -44,11 +44,11 @@ public class ProductService {
 	public Product editProduct(Long id, Product product) {
 		Product edit = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 		
-		if(product.getName() != null) {
+		if(product.getName() != null && !product.getName().isEmpty()) {
 			edit.setName(product.getName());
 		}
 		
-		if(product.getDescription() != null) {
+		if(product.getDescription() != null && !product.getDescription().isEmpty()) {
 			edit.setDescription(product.getDescription());
 		}
 		
