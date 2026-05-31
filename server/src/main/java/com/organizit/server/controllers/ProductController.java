@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,13 +27,19 @@ public class ProductController {
 	
 	@GetMapping
 	public ResponseEntity<List<Product>> findAll(){
-		return ResponseEntity.ok().body(service.findAll());
+		return ResponseEntity.ok().body(service.findAllActives());
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Product> findById(@PathVariable Long id){
 		Product obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@PatchMapping("/{id}")
+	public ResponseEntity<Void> deactivateProductById(@PathVariable Long id){
+		service.deactivateProductById(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping

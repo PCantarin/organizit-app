@@ -15,17 +15,29 @@ public class ProductService {
 	@Autowired
 	public ProductRepository repository;
 
-	public List<Product> findAll() {
-		return repository.findAll();
+	public List<Product> findAllActives() {
+		return repository.findByActiveTrue();
 	}
 
 	public Product findById(Long id) {
-		return repository.findById(id).get();
+		Product obj = repository.findById(id).orElseThrow(() -> new RuntimeException("Object not found."));
+		
+		if(!obj.getActive()) {
+			throw new RuntimeException("Object not found.");
+		}
+		
+		return obj;
 	}
 
 	public Product addNewProduct(Product product) {
 		product.setDateInsert(Instant.now());
 		return repository.save(product);
+	}
+	
+	public void deactivateProductById(Long id) {
+		Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+		product.setActive(false);
+		repository.save(product);
 	}
 	
 	public Product addProduct(Long id, Integer quantity) {
