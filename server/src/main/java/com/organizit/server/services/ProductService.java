@@ -2,6 +2,7 @@ package com.organizit.server.services;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,20 @@ public class ProductService {
 		Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 		product.setActive(false);
 		repository.save(product);
+	}
+	
+	public Product editProduct(Long id, Product product) {
+		Product edit = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+		
+		if(product.getName() != null) {
+			edit.setName(product.getName());
+		}
+		
+		if(product.getDescription() != null) {
+			edit.setDescription(product.getDescription());
+		}
+		
+		return repository.save(edit);
 	}
 	
 	public Product addProduct(Long id, Integer quantity) {
