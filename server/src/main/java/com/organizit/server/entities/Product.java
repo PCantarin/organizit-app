@@ -33,6 +33,7 @@ public class Product implements Serializable{
 	private String description;
 	private Instant dateInsert;
 	private Integer quantity;
+	private Boolean active;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "product")
@@ -49,6 +50,7 @@ public class Product implements Serializable{
 		this.description = description;
 		this.dateInsert = dateInsert;
 		this.quantity = quantity;
+		this.active = true;
 	}
 
 
@@ -119,6 +121,14 @@ public class Product implements Serializable{
 			return false;
 		Product other = (Product) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }
