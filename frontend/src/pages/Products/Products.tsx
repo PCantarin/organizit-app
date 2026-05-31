@@ -171,12 +171,18 @@ function Products() {
 
   const handleDeactivateProduct = async () => {
 
-    if(!selectedProduct) return;
-    
-    await deactivateProductById(selectedProduct);
-    
-    setProductList((prev) => prev.filter((p) => p.id !== selectedProduct.id));
-    setOpenDeactivateAlert(false);
+    if (!selectedProduct) return;
+
+    try {
+      await deactivateProductById(selectedProduct);
+
+      setProductList((prev) => prev.filter((p) => p.id !== selectedProduct.id));
+      setOpenDeactivateAlert(false);
+      successMessage("Produto deletado com sucesso.");
+    }
+    catch {
+      errorMessage("Ocorreu um erro ao deletar o produto.")
+    }
   }
 
   const filteredValues = productList.filter(
