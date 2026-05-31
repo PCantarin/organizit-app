@@ -4,21 +4,25 @@ import {
   DialogActions,
   DialogContent,
   Divider,
+  IconButton,
   Stack,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   addProduct,
   createProduct,
+  deactivateProductById,
   getProducts,
   removeProduct,
 } from "../../services/productService.ts";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
+import ModeRoundedIcon from '@mui/icons-material/ModeRounded';
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import type {
   CreateProductDTO,
   Product,
@@ -33,6 +37,7 @@ import FormTextField from "../../components/Inputs/FormTextField.tsx";
 import FormNumberField from "../../components/Inputs/FormNumberField.tsx";
 import ControlButton from "../../components/Buttons/ControlButton.tsx";
 import { errorMessage, successMessage } from "../../services/messageService.ts";
+import AlertModal from "../../components/MessageModal/AlertModal.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -41,6 +46,7 @@ function Products() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [openRemoveProduct, setOpenRemoveProduct] = useState(false);
   const [openAddProduct, setOpenAddProduct] = useState(false);
+  const [openDeactivateAlert, setOpenDeactivateAlert] = useState(false);
 
   //fetching product data here
   useEffect(() => {
@@ -139,10 +145,10 @@ function Products() {
     const quantity = Number(formData.get("quantity") ?? 0);
 
     if (quantity <= 0) {
-      errorMessage("A quantidade a ser adicionada precisa ser maior do que 0.") 
+      errorMessage("A quantidade a ser adicionada precisa ser maior do que 0.")
       return;
     }
-    
+
     try {
       await addProduct(selectedProduct.id, quantity);
 
@@ -162,6 +168,16 @@ function Products() {
       errorMessage("Ocorreu um erro ao efetuar a adição do produto.");
     }
   };
+
+  const handleDeactivateProduct = async () => {
+
+    if(!selectedProduct) return;
+    
+    await deactivateProductById(selectedProduct);
+    
+    setProductList((prev) => prev.filter((p) => p.id !== selectedProduct.id));
+    setOpenDeactivateAlert(false);
+  }
 
   const filteredValues = productList.filter(
     (product) =>
@@ -216,7 +232,7 @@ function Products() {
     {
       field: "actions",
       headerName: "",
-      minWidth: 200,
+      minWidth: 250,
       flex: 2,
       align: "center",
       headerAlign: "center",
@@ -251,6 +267,15 @@ function Products() {
                 setOpenAddProduct(true);
               }}
             />
+            <IconButton>
+              <ModeRoundedIcon />
+            </IconButton>
+            <IconButton onClick={() => {
+              setSelectedProduct(params.row);
+              setOpenDeactivateAlert(true);
+            }}>
+              <DeleteRoundedIcon />
+            </IconButton>
           </Stack>
         );
       },
@@ -289,7 +314,6 @@ function Products() {
           rowSelection={false}
           sx={{
             border: 0,
-            borderRadius: "10px",
             "& .MuiDataGrid-columnHeader": {
               backgroundColor: "#ebebeb",
               fontSize: 16,
@@ -361,6 +385,14 @@ function Products() {
           </form>
         </DialogContent>
       </Dialog>
+
+      <AlertModal
+        text="Deseja realmente excluir o produto?"
+        open={openDeactivateAlert}
+        onCancel={() => { setOpenDeactivateAlert(false) }}
+        onConfirm={handleDeactivateProduct}
+      />
+
     </Box>
   );
 }

@@ -37,3 +37,8 @@ export async function addProduct(id: number, quantity:number) {
   const response = await api.patch(`/products/${id}/add/${quantity}`)
   return response.data;
 }
+
+export async function deactivateProductById(product: Product) {
+  const response = await api.patch(`/products/${product.id}`)
+  return response.data;
+}
