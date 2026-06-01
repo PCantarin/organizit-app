@@ -440,8 +440,9 @@ function Products() {
         <ModalHeader text="Editar" icon={ModeRoundedIcon} />
         <DialogContent>
           <form onSubmit={handleEditProduct}>
-            <FormTextField name="name" label="Nome" required={false} />
+            <FormTextField name="name" label="Nome" required={false} initialValue={selectedProduct?.name} />
             <FormTextField
+              initialValue={selectedProduct?.description}
               name="description"
               label="Descrição"
               required={false}

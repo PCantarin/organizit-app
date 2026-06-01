@@ -6,6 +6,7 @@ export type FormTextFieldProps = {
   variant?: "outlined" | "filled" | "standard";
   required?: boolean;
   type?: "text" | "date" | "email" | "password";
+  initialValue?: string; 
 };
 
 function FormTextField({
@@ -14,6 +15,7 @@ function FormTextField({
   variant = "standard",
   required,
   type = "text",
+  initialValue,
 }: FormTextFieldProps) {
   return (
     <TextField
@@ -22,6 +24,7 @@ function FormTextField({
       name={name}
       label={label}
       fullWidth
+      defaultValue={initialValue}
       type={type}
       variant={variant}
       sx={{
