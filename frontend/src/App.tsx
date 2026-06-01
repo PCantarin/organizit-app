@@ -6,6 +6,7 @@ import Users from "./pages/Users/Users";
 import Products from "./pages/Products/Products";
 
 import "./App.css";
+import Movements from "./pages/Movements/Movements";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/home" element={<Home />}/>
           <Route path="/users" element={<Users />}/>
           <Route path="/products" element={<Products />}/>
+          <Route path="/movements" element={<Movements />}/>
         </Route>
       </Routes>
     </BrowserRouter>
