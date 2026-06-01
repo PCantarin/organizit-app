@@ -4,7 +4,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import { Divider, Menu } from "@mui/material";
+import { Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Drawer } from "@mui/material";
@@ -16,6 +16,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import { Toaster } from "react-hot-toast";
 import DefaultListItem from "../../components/Drawer/DefaultListItem";
+import DrawerDivider from "../../components/Drawer/DrawerDivider";
 
 function Layout() {
   const navigate = useNavigate();
@@ -130,7 +131,7 @@ function Layout() {
           icon={HomeRoundedIcon}
         />
 
-        <Divider textAlign="left">Produtos</Divider>
+        <DrawerDivider text="Produtos" />
 
         <DefaultListItem
           text="Produtos"
@@ -144,7 +145,7 @@ function Layout() {
           icon={HistoryRoundedIcon}
         />
 
-        <Divider textAlign="left">Adm. Usuários</Divider>
+        <DrawerDivider text="Admin. Usuários" />
 
         <DefaultListItem
           text="Usuários"
