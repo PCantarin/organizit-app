@@ -4,22 +4,18 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import { Menu } from "@mui/material";
+import { Divider, Menu } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Drawer } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import {
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  ListItemIcon,
-} from "@mui/material";
+import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import { Toaster } from "react-hot-toast";
+import DefaultListItem from "../../components/Drawer/DefaultListItem";
 
 function Layout() {
   const navigate = useNavigate();
@@ -128,56 +124,33 @@ function Layout() {
       >
         <Toolbar />
 
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => navigate("/home")}
-            sx={{
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#8240f4",
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: "white" }}>
-              <HomeRoundedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Principal" />
-          </ListItemButton>
-        </ListItem>
+        <DefaultListItem
+          text="Principal"
+          onClick={() => navigate("/home")}
+          icon={HomeRoundedIcon}
+        />
 
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => navigate("/products")}
-            sx={{
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#8240f4",
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: "white" }}>
-              <Inventory2RoundedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Produtos" />
-          </ListItemButton>
-        </ListItem>
+        <Divider textAlign="left">Produtos</Divider>
 
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => navigate("/users")}
-            sx={{
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#8240f4",
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: "white" }}>
-              <PersonRoundedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Usuários" />
-          </ListItemButton>
-        </ListItem>
+        <DefaultListItem
+          text="Produtos"
+          onClick={() => navigate("/products")}
+          icon={Inventory2RoundedIcon}
+        />
+
+        <DefaultListItem
+          text="Movimentações"
+          onClick={() => navigate("/movements")}
+          icon={HistoryRoundedIcon}
+        />
+
+        <Divider textAlign="left">Adm. Usuários</Divider>
+
+        <DefaultListItem
+          text="Usuários"
+          onClick={() => navigate("/users")}
+          icon={PersonRoundedIcon}
+        />
       </Drawer>
       <Box
         sx={{
