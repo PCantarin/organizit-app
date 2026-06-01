@@ -25,6 +25,9 @@ public class TokenService {
 			String token = JWT.create()
 					.withIssuer("organizit-app")
 					.withSubject(user.getUsername())
+					.withClaim("id", user.getId())
+					.withClaim("name", user.getName())
+					.withClaim("role", user.getRole().name())
 					.withExpiresAt(generateExpirationDate())
 					.sign(algotrithm);
 			
