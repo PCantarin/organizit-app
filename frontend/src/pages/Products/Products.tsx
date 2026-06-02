@@ -1,16 +1,20 @@
+import React, { useEffect, useState } from "react";
+
 import {
   Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Divider,
   IconButton,
   Stack,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
+
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
+import ModeRoundedIcon from "@mui/icons-material/ModeRounded";
+
+import type { Product, ProductDTO } from "../../services/productService.ts";
+
 import {
   addProduct,
   createProduct,
@@ -19,27 +23,18 @@ import {
   getProducts,
   removeProduct,
 } from "../../services/productService.ts";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
-import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
-import ModeRoundedIcon from '@mui/icons-material/ModeRounded';
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import type {
-  Product,
-  ProductDTO,
-} from "../../services/productService.ts";
-import SearchInput from "../../components/Inputs/SearchInput.tsx";
-import PageTitle from "../../components/PageTitle.tsx";
-import PageDivider from "../../components/PageDivider.tsx";
-import ModalHeader from "../../components/ModalHeader.tsx";
-import SimpleButton from "../../components/Buttons/SimpleButton.tsx";
-import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
-import FormTextField from "../../components/Inputs/FormTextField.tsx";
-import FormNumberField from "../../components/Inputs/FormNumberField.tsx";
-import ControlButton from "../../components/Buttons/ControlButton.tsx";
 import { errorMessage, successMessage } from "../../services/messageService.ts";
+
+import ControlButton from "../../components/Buttons/ControlButton.tsx";
+import HeaderButton from "../../components/Buttons/HeaderButton.tsx";
+import SearchInput from "../../components/Inputs/SearchInput.tsx";
 import AlertModal from "../../components/MessageModal/AlertModal.tsx";
+import PageDivider from "../../components/PageDivider.tsx";
+import PageTitle from "../../components/PageTitle.tsx";
+import ModalEditProduct from "./Modals/ModalEditProduct.tsx";
+import ModalAddProduct from "./Modals/ModalAddProduct.tsx";
+import ModalRemoveProduct from "./Modals/ModalRemoveProduct.tsx";
+import ModalNewProduct from "./Modals/ModalNewProduct.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -153,7 +148,7 @@ function Products() {
     const quantity = Number(formData.get("quantity") ?? 0);
 
     if (quantity <= 0) {
-      errorMessage("A quantidade a ser adicionada precisa ser maior do que 0.")
+      errorMessage("A quantidade a ser adicionada precisa ser maior do que 0.");
       return;
     }
 
@@ -178,7 +173,6 @@ function Products() {
   };
 
   const handleDeactivateProduct = async () => {
-
     if (!selectedProduct) return;
 
     try {
@@ -187,11 +181,10 @@ function Products() {
       setProductList((prev) => prev.filter((p) => p.id !== selectedProduct.id));
       setOpenDeactivateAlert(false);
       successMessage("Produto deletado com sucesso.");
+    } catch {
+      errorMessage("Ocorreu um erro ao deletar o produto.");
     }
-    catch {
-      errorMessage("Ocorreu um erro ao deletar o produto.")
-    }
-  }
+  };
 
   const handleEditProduct = async (event: React.SubmitEvent) => {
     event.preventDefault();
@@ -202,28 +195,32 @@ function Products() {
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData.entries());
 
-      if(data.name.toString().trim() === "" && data.description.toString().trim() === ""){
-        errorMessage("Preencha ao menos um dos campos para edição!")
+      if (
+        data.name.toString().trim() === "" &&
+        data.description.toString().trim() === ""
+      ) {
+        errorMessage("Preencha ao menos um dos campos para edição!");
         return;
       }
 
       const productEdit: ProductDTO = {
         name: data.name as string,
-        description: data.description as string
-      }
+        description: data.description as string,
+      };
 
       const editted = await editProduct(selectedProduct.id, productEdit);
-      setProductList((prev) => prev.map((product) =>
-        product.id === selectedProduct.id ? editted : product
-      ));
+      setProductList((prev) =>
+        prev.map((product) =>
+          product.id === selectedProduct.id ? editted : product,
+        ),
+      );
 
       setOpenEditProduct(false);
-      successMessage("Produto editado com sucesso!")
+      successMessage("Produto editado com sucesso!");
+    } catch {
+      errorMessage("Ocorreu um erro ao editar o produto.");
     }
-    catch {
-      errorMessage("Ocorreu um erro ao editar o produto.")
-    }
-  }
+  };
 
   const filteredValues = productList.filter(
     (product) =>
@@ -313,16 +310,20 @@ function Products() {
                 setOpenAddProduct(true);
               }}
             />
-            <IconButton onClick={() => {
-              setSelectedProduct(params.row);
-              setOpenEditProduct(true);
-            }}>
+            <IconButton
+              onClick={() => {
+                setSelectedProduct(params.row);
+                setOpenEditProduct(true);
+              }}
+            >
               <ModeRoundedIcon />
             </IconButton>
-            <IconButton onClick={() => {
-              setSelectedProduct(params.row);
-              setOpenDeactivateAlert(true);
-            }}>
+            <IconButton
+              onClick={() => {
+                setSelectedProduct(params.row);
+                setOpenDeactivateAlert(true);
+              }}
+            >
               <DeleteRoundedIcon />
             </IconButton>
           </Stack>
@@ -376,93 +377,39 @@ function Products() {
         />
       </Paper>
 
-      <Dialog onClose={handleCloseNewProduct} open={openNewProduct}>
-        <ModalHeader text="Salvar novo produto" icon={AddRoundedIcon} />
-        <DialogContent>
-          <form onSubmit={addNewProduct}>
-            <FormTextField name="name" label="Nome" required={true} />
-            <FormTextField
-              name="description"
-              label="Descrição"
-              required={true}
-            />
-            <FormNumberField
-              name="quantity"
-              label="Quantidade inicial"
-              required={true}
-            />
+      <ModalNewProduct
+        onClose={handleCloseNewProduct}
+        open={openNewProduct}
+        onSubmit={addNewProduct}
+      />
 
-            <Divider sx={{ mt: 1 }} />
-            <DialogActions>
-              <SimpleButton type="submit" text="Cadastrar" />
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <ModalRemoveProduct
+        onClose={handleCloseRemoveProduct}
+        open={openRemoveProduct}
+        onSubmit={handleRemoveProduct}
+      />
 
-      <Dialog onClose={handleCloseRemoveProduct} open={openRemoveProduct}>
-        <ModalHeader text="Retirar" icon={RemoveCircleOutlineRoundedIcon} />
-        <DialogContent>
-          <form onSubmit={handleRemoveProduct}>
-            <FormNumberField
-              name="quantity"
-              label="Quantidade"
-              required={true}
-            />
+      <ModalAddProduct
+        onClose={handleCloseAddProduct}
+        open={openAddProduct}
+        onSubmit={handleAddProduct}
+      />
 
-            <Divider sx={{ mt: 1 }} />
-            <DialogActions>
-              <SimpleButton type="submit" text="Confirmar" />
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog onClose={handleCloseAddProduct} open={openAddProduct}>
-        <ModalHeader text="Inserir" icon={AddCircleOutlineRoundedIcon} />
-        <DialogContent>
-          <form onSubmit={handleAddProduct}>
-            <FormNumberField
-              name="quantity"
-              label="Quantidade"
-              required={true}
-            />
-
-            <Divider sx={{ mt: 1 }} />
-            <DialogActions>
-              <SimpleButton type="submit" text="Confirmar" />
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog onClose={handleCloseEditProduct} open={openEditProduct}>
-        <ModalHeader text="Editar" icon={ModeRoundedIcon} />
-        <DialogContent>
-          <form onSubmit={handleEditProduct}>
-            <FormTextField name="name" label="Nome" required={false} initialValue={selectedProduct?.name} />
-            <FormTextField
-              initialValue={selectedProduct?.description}
-              name="description"
-              label="Descrição"
-              required={false}
-            />
-
-            <Divider sx={{ mt: 1 }} />
-            <DialogActions>
-              <SimpleButton type="submit" text="Confirmar" />
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <ModalEditProduct
+        onClose={handleCloseEditProduct}
+        open={openEditProduct}
+        selectedProduct={selectedProduct}
+        onSubmit={handleEditProduct}
+      />
 
       <AlertModal
         text="Deseja realmente excluir o produto?"
         open={openDeactivateAlert}
-        onCancel={() => { setOpenDeactivateAlert(false) }}
+        onCancel={() => {
+          setOpenDeactivateAlert(false);
+        }}
         onConfirm={handleDeactivateProduct}
       />
-
     </Box>
   );
 }
