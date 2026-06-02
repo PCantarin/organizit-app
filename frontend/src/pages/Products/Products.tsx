@@ -337,7 +337,6 @@ function Products() {
   return (
     <Box>
       <PageTitle text="Produtos" icon={Inventory2RoundedIcon} />
-
       <PageDivider />
 
       <Box
@@ -349,7 +348,6 @@ function Products() {
         }}
       >
         <SearchInput value={filterText} onChange={handleFilterChange} />
-
         <HeaderButton text="Novo Produto" onClick={handleClickOpen} />
       </Box>
 
@@ -405,9 +403,7 @@ function Products() {
       <AlertModal
         text="Deseja realmente excluir o produto?"
         open={openDeactivateAlert}
-        onCancel={() => {
-          setOpenDeactivateAlert(false);
-        }}
+        onCancel={() => {setOpenDeactivateAlert(false)}}
         onConfirm={handleDeactivateProduct}
       />
     </Box>
