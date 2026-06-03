@@ -5,8 +5,6 @@ import {
   IconButton,
   Stack,
 } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -35,6 +33,8 @@ import ModalEditProduct from "./Modals/ModalEditProduct.tsx";
 import ModalAddProduct from "./Modals/ModalAddProduct.tsx";
 import ModalRemoveProduct from "./Modals/ModalRemoveProduct.tsx";
 import ModalNewProduct from "./Modals/ModalNewProduct.tsx";
+import CustomDataGrid from "../../components/DataGrid/CustomDataGrid.tsx";
+import FullWidthBox from "../../components/Containers/FullWidthBox.tsx";
 
 function Products() {
   const [productList, setProductList] = useState<Product[]>([]);
@@ -264,8 +264,7 @@ function Products() {
       align: "center",
       headerAlign: "center",
       valueFormatter: (value) => {
-        if (!value) return "";
-        else return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
+        return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
       },
     },
     {
@@ -328,48 +327,17 @@ function Products() {
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 10 };
-
   return (
     <Box>
       <PageTitle text="Produtos" icon={Inventory2RoundedIcon} />
       <PageDivider />
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "top",
-          gap: 2,
-        }}
-      >
+      <FullWidthBox>
         <SearchInput value={filterText} onChange={setFilterText} />
         <HeaderButton text="Novo Produto" onClick={handleClickOpen} />
-      </Box>
+      </FullWidthBox>
 
-      <Paper sx={{ maxHeight: 750, width: "100%" }}>
-        <DataGrid
-          rows={filteredValues}
-          columns={columns}
-          initialState={{
-            pagination: { paginationModel },
-          }}
-          pageSizeOptions={[10]}
-          rowSelection={false}
-          localeText={{ noRowsLabel: "Nenhum produto encontrado." }}
-          sx={{
-            border: 0,
-            "& .MuiDataGrid-columnHeader": {
-              backgroundColor: "#ebebeb",
-              fontSize: 16,
-              fontWeight: "bold",
-            },
-            "& .MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-          }}
-        />
-      </Paper>
+      <CustomDataGrid columns={columns} rows={filteredValues} />
 
       <ModalNewProduct
         onClose={handleCloseNewProduct}
