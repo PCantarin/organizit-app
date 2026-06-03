@@ -4,7 +4,7 @@ import type { GridColDef } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import PageTitle from "../../components/PageTitle";
 import PageDivider from "../../components/PageDivider";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import SearchInput from "../../components/Inputs/SearchInput";
 import CustomDataGrid from "../../components/DataGrid/CustomDataGrid";
 import AlertModal from "../../components/MessageModal/AlertModal";
@@ -133,7 +133,7 @@ function Users() {
 
   return (
     <Box>
-      <PageTitle text="Administrar usuários" icon={PersonRoundedIcon} />
+      <PageTitle text="Administrar usuários" icon={PeopleAltRoundedIcon} />
       <PageDivider />
 
       <FullWidthBox>

@@ -12,7 +12,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import { Toaster } from "react-hot-toast";
 import DefaultListItem from "../../components/Drawer/DefaultListItem";
@@ -150,7 +150,7 @@ function Layout() {
         <DefaultListItem
           text="Usuários"
           onClick={() => navigate("/users")}
-          icon={PersonRoundedIcon}
+          icon={PeopleAltRoundedIcon}
         />
       </Drawer>
       <Box
