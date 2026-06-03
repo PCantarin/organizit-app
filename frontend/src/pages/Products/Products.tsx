@@ -59,10 +59,6 @@ function Products() {
     fetchProducts();
   }, []);
 
-  const handleFilterChange = (value: string) => {
-    setFilterText(value);
-  };
-
   const handleClickOpen = () => {
     setOpenNewProduct(true);
   };
@@ -347,7 +343,7 @@ function Products() {
           gap: 2,
         }}
       >
-        <SearchInput value={filterText} onChange={handleFilterChange} />
+        <SearchInput value={filterText} onChange={setFilterText} />
         <HeaderButton text="Novo Produto" onClick={handleClickOpen} />
       </Box>
 
