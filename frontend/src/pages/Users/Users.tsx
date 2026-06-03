@@ -7,15 +7,17 @@ import { useState, useEffect } from "react";
 import PageTitle from "../../components/PageTitle";
 import PageDivider from "../../components/PageDivider";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import SearchInput from "../../components/Inputs/SearchInput";
 
 function Users() {
-  const [rows, setRows] = useState<User[]>([]);
+  const [userList, setUserList] = useState<User[]>([]);
+  const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
     async function fetchUsers() {
       try {
         const data = await getUsers();
-        setRows(data);
+        setUserList(data);
       } catch (error) {
         console.error(error);
       }
@@ -72,22 +74,29 @@ function Users() {
 
   const paginationModel = { page: 0, pageSize: 10 };
 
+  const filteredValue = userList.filter (
+    (user) => 
+      user.id.toString().includes(filterText) ||
+      user.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      user.username.toLowerCase().includes(filterText.toLowerCase())
+  );
+
   return (
     <Box>
       <PageTitle text="Usuários" icon={PersonRoundedIcon} />
 
       <PageDivider />
 
+      <SearchInput value={filterText} onChange={setFilterText} />
 
       <Paper sx={{ maxHeight: 750, width: "100%" }}>
         <DataGrid
-          rows={rows}
+          rows={filteredValue}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[10]}
           sx={{
             border: 0,
-            borderRadius: "10px",
             "& .MuiDataGrid-columnHeader": {
               backgroundColor: "#ebebeb",
               fontSize: 16,

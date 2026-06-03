@@ -1,7 +1,7 @@
 import api from "./api";
 import { jwtDecode } from "jwt-decode";
 
-type User = {
+export type User = {
   id: number;
   name: string;
   username: string;
