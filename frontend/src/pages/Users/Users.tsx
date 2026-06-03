@@ -1,17 +1,25 @@
-import { Box } from "@mui/material";
+import { Box, IconButton, Stack } from "@mui/material";
 import { getUsers, type User } from "../../services/userService";
-import Paper from "@mui/material/Paper";
-import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import PageTitle from "../../components/PageTitle";
 import PageDivider from "../../components/PageDivider";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import SearchInput from "../../components/Inputs/SearchInput";
+import CustomDataGrid from "../../components/DataGrid/CustomDataGrid";
+import AlertModal from "../../components/MessageModal/AlertModal";
+import ModeRoundedIcon from "@mui/icons-material/ModeRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import FullWidthBox from "../../components/Containers/FullWidthBox";
+import HeaderButton from "../../components/Buttons/HeaderButton";
+import ModalNewUser from "./Modals/ModalNewUser";
 
 function Users() {
   const [userList, setUserList] = useState<User[]>([]);
   const [filterText, setFilterText] = useState("");
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [openNewUser, setOpenNewUser] = useState(false);
+  const [openDeactivateAlert, setOpenDeactivateAlert] = useState(false);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -24,6 +32,10 @@ function Users() {
     }
     fetchUsers();
   }, []);
+
+  const handleDeactivateUser = () => {
+    //TODO: create an endpoint to deactivate user
+  }
 
   const columns: GridColDef[] = [
     {
@@ -53,7 +65,7 @@ function Users() {
     {
       field: "role",
       flex: 1,
-      headerName: "Nível de permissão",
+      headerName: "Nível de acesso",
       width: 200,
       align: "center",
       headerAlign: "center",
@@ -66,48 +78,79 @@ function Users() {
       align: "center",
       headerAlign: "center",
       valueFormatter: (value) => {
-        if (!value) return "";
-        else return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
+        return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
+      },
+    },
+    {
+      field: "actions",
+      headerName: "",
+      minWidth: 100,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => {
+        return (
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <IconButton
+              onClick={() => {
+                setSelectedUser(params.row);
+              }}
+            >
+              <ModeRoundedIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                setSelectedUser(params.row);
+                setOpenDeactivateAlert(true);
+              }}
+            >
+              <DeleteRoundedIcon />
+            </IconButton>
+          </Stack>
+        );
       },
     },
   ];
 
-  const paginationModel = { page: 0, pageSize: 10 };
-
-  const filteredValue = userList.filter (
-    (user) => 
+  const filteredValue = userList.filter(
+    (user) =>
       user.id.toString().includes(filterText) ||
       user.name.toLowerCase().includes(filterText.toLowerCase()) ||
-      user.username.toLowerCase().includes(filterText.toLowerCase())
+      user.username.toLowerCase().includes(filterText.toLowerCase()),
   );
 
   return (
     <Box>
       <PageTitle text="Usuários" icon={PersonRoundedIcon} />
-
       <PageDivider />
 
-      <SearchInput value={filterText} onChange={setFilterText} />
+      <FullWidthBox>
+        <SearchInput value={filterText} onChange={setFilterText} />
+        <HeaderButton text="Add. Usuário" onClick={() => setOpenNewUser(true)} />
+      </FullWidthBox>
 
-      <Paper sx={{ maxHeight: 750, width: "100%" }}>
-        <DataGrid
-          rows={filteredValue}
-          columns={columns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[10]}
-          sx={{
-            border: 0,
-            "& .MuiDataGrid-columnHeader": {
-              backgroundColor: "#ebebeb",
-              fontSize: 16,
-              fontWeight: "bold",
-            },
-            "& .MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-          }}
-        />
-      </Paper>
+      <CustomDataGrid columns={columns} rows={filteredValue} />
+
+      <ModalNewUser open={openNewUser} onClose={() => setOpenNewUser(false)} onSubmit={() => {}} />
+
+      <AlertModal
+        text="Deseja realmente desativar o usuário?"
+        open={openDeactivateAlert}
+        onCancel={() => setOpenDeactivateAlert(false)}
+        onConfirm={handleDeactivateUser}
+      />
     </Box>
   );
 }

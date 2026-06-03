@@ -59,7 +59,7 @@ function Products() {
     fetchProducts();
   }, []);
 
-  const handleClickOpen = () => {
+  const handleClickOpenNewProduct = () => {
     setOpenNewProduct(true);
   };
 
@@ -334,7 +334,7 @@ function Products() {
 
       <FullWidthBox>
         <SearchInput value={filterText} onChange={setFilterText} />
-        <HeaderButton text="Novo Produto" onClick={handleClickOpen} />
+        <HeaderButton text="Novo Produto" onClick={handleClickOpenNewProduct} />
       </FullWidthBox>
 
       <CustomDataGrid columns={columns} rows={filteredValues} />
