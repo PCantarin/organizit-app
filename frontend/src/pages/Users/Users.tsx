@@ -133,7 +133,7 @@ function Users() {
 
   return (
     <Box>
-      <PageTitle text="Usuários" icon={PersonRoundedIcon} />
+      <PageTitle text="Administrar usuários" icon={PersonRoundedIcon} />
       <PageDivider />
 
       <FullWidthBox>
