@@ -14,12 +14,17 @@ public class UserService {
 	@Autowired
 	public UserRepository repository;
 			
-	public List<User> findAll(){
-		return repository.findAll();
+	public List<User> findAllActives(){
+		return repository.findByActiveTrue();
 	}
 	
 	public User findById(Long id) {
-		return repository.findById(id).get();
+		User obj = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		if(!obj.getActive()) {
+			throw new RuntimeException("User not found");
+		}
+		return obj;
 	}
+	
 	
 }

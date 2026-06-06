@@ -32,6 +32,7 @@ public class User implements UserDetails{
 	private String login;
 	private UserRole role;
 	private Instant createdAt;
+	private Boolean active;
 	
 	@JsonIgnore
 	private String password;
@@ -51,6 +52,7 @@ public class User implements UserDetails{
 		this.role = role;
 		this.createdAt = createdAt;
 		this.password = password;
+		this.active = true;
 	}
 
 	
@@ -132,6 +134,14 @@ public class User implements UserDetails{
 		else {
 			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 		}
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }
